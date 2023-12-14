@@ -12,4 +12,5 @@ open class MainPage {
     open val browser = playwright.chromium().launch(BrowserType.LaunchOptions().setHeadless(false))
     val context = browser.newContext()
     open val page = context.newPage()
+    //blabla
 }
