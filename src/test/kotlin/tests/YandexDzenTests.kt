@@ -1,7 +1,6 @@
 package tests
 
 import base.BaseTest
-import com.microsoft.playwright.Page
 import io.qameta.allure.Allure
 import io.qameta.allure.Description
 import io.qameta.allure.Owner
