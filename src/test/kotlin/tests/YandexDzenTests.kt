@@ -1,42 +1,36 @@
 package tests
 
-import com.microsoft.playwright.Locator
-import com.microsoft.playwright.Page
-import org.junit.jupiter.api.Test
-import java.io.IOException
-import java.nio.file.Paths
+import base.BaseTest
 import com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat
+import org.testng.Assert
+import org.testng.annotations.Test
 import java.util.regex.Pattern
 
 
-class YandexDzenTests : MainPage() {
+class YandexDzenTests : BaseTest() {
 
 
     @Test
     fun firstTest() {
-        try {
+        page?.navigate("http://85.192.34.140:8081/")
+        page?.getByText("Elements")?.click();
+        page?.querySelector("//li[@id='item-0']/span[1]")?.click();
+        page?.fill("[id=userName]", "ThreadQA Test");
+        page?.fill("[id=userEmail]", "threadqa@gmail.com");
+        page?.fill("[id=currentAddress]", "somewhere");
+        page?.click("[id=submit]");
 
-            page.navigate("https://dzen.ru/")
-            page.screenshot(Page.ScreenshotOptions().setPath(Paths.get("target/screenshots/1.png")))
-            assertThat(page).hasTitle(Pattern.compile("Дзен"))
-
-            val article: Locator =
-                page.locator("text=Словацкий депутат Блаха назвал красной линией для России вылет F-16 c баз НАТО")
-            assertThat(article).hasAttribute("class", "card-news-story__text-3F")
-            article.click()
-
-        } catch (e: IOException) {
-        }
-
+        //Проверяем, что после заполнения формы, появился другой блок
+        Assert.assertTrue(page?.isVisible("[id=output]")!!);
+        //Проверяем, что в появившемся блоке, текст содержит предыдущий текст
+        Assert.assertTrue(page?.locator("[id=name]")?.textContent()!!.contains("NOT ThreadQA Test"));
     }
 
 
     @Test
     fun secondTest() {
-        page.navigate("https://www.kinopoisk.ru/")
-        page.screenshot(Page.ScreenshotOptions().setPath(Paths.get("target/screenshots/2.png")))
-
-        assertThat(page).hasTitle("Кинопоиск. Все фильмы планеты.")
+        page?.navigate("https://dzen.ru/")
+        assertThat(page).hasTitle(Pattern.compile("Дзен"))
     }
 
 }
